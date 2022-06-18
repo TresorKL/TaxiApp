@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TaxiApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="open_nav">Open navigation</string>
+    <string name="close_nav">Close navigation</string>
+</resources>
