@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
+//------------------------------------------------------------------------------------------------
+//Adapter using ViewHolder
+//------------------------------------------------------------------------------------------------
 public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.ViewHolder> {
 
 String [] topDirections;
@@ -19,22 +21,12 @@ String [] topDirections;
 
     }
 
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //LayoutInflater inflater = LayoutInflater.from(context);
-
-       // View view = inflater.inflate(R.layout.row_suggestion,parent,false);
 
         // create a new view
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.row_suggestion, null);
-
-        // create ViewHolder
-
-       // ViewHolder viewHolder = new ViewHolder(itemLayoutView);
-       // return viewHolder;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_suggestion, null);
         return new ViewHolder(view);
 
     }
@@ -43,31 +35,12 @@ String [] topDirections;
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.direction.setText(topDirections[position]);
     }
-//
-//    @Override
-//    public void onBindViewHolder(@NonNull SuggestionAdapter.MyViewHolder holder, int position) {
-//      holder.direction.setText(topDirections[position]);
-//
-//
-//    }
+
 
     @Override
     public int getItemCount() {
         return topDirections.length;
     }
-
-//    public class MyViewHolder extends RecyclerView.ViewHolder {
-//
-//
-//
-//
-//        public MyViewHolder(@NonNull View itemView) {
-//            super(itemView);
-//
-//
-//
-//        }
-//    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout row;

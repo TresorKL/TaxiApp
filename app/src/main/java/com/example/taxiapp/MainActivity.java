@@ -29,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+//------------------------------------------------------------------------------------------------
+// DISPLAY TOOLBAR (Burger menu)
+//------------------------------------------------------------------------------------------------
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.myMenu);
         toolbar = findViewById(R.id.toolbar);
@@ -38,13 +40,20 @@ public class MainActivity extends AppCompatActivity {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open_nav,R.string.close_nav);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+//------------------------------------------------------------------------------------------------
+// DISPLAY The first Fragment (which is the MAP)
+//------------------------------------------------------------------------------------------------
+
         MapsFragment mapsFragment = new MapsFragment () ;
         FragmentManager manager = getSupportFragmentManager () ;
         manager.beginTransaction()
                 .replace(R.id.firstLayout, mapsFragment, mapsFragment.getTag())
                 .commit();
 
-
+//------------------------------------------------------------------------------------------------
+// DISPLAY The second Fragment
+//------------------------------------------------------------------------------------------------
         Bottom bottom = new Bottom () ;
         FragmentManager managerBtm = getSupportFragmentManager () ;
         managerBtm.beginTransaction()

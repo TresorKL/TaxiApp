@@ -7,11 +7,13 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1535" />
         <entry key="app/src/main/res/drawable/search_icon.xml" value="0.119" />
         <entry key="app/src/main/res/drawable/style_bottom_layout.xml" value="0.10088958740234376" />
+        <entry key="app/src/main/res/drawable/style_direction_layout.xml" value="0.119" />
         <entry key="app/src/main/res/drawable/style_suggestions.xml" value="0.119" />
         <entry key="app/src/main/res/drawable/style_toolbar.xml" value="0.119" />
         <entry key="app/src/main/res/drawable/style_where_btn.xml" value="0.119" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19753086419753085" />
         <entry key="app/src/main/res/layout/bottom_layout.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/direction_layout.xml" value="0.13496376811594202" />
         <entry key="app/src/main/res/layout/fragment_bottom.xml" value="0.13496376811594202" />
         <entry key="app/src/main/res/layout/fragment_bottom_fragment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_item_list_dialog_list_dialog.xml" value="0.1082427536231884" />
