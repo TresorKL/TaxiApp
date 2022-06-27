@@ -48,6 +48,9 @@ public class Bottom extends Fragment {
                 dialog.getWindow().getAttributes().windowAnimations=R.style.DialogAnimation;
                 dialog.getWindow().setGravity(Gravity.BOTTOM);
 
+
+
+
             }
         });
 //------------------------------------------------------------------------------------------------

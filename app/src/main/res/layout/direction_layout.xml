@@ -10,65 +10,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+
         >
 
+        <EditText
+            android:id="@+id/pickUp"
+            android:layout_width="300sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="Search pick-up location"
+            android:textColorHint="#807D7D"
+            android:drawableLeft="@drawable/current_location"
+            android:textColor="@color/black"
+            android:textSize="24sp"
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DIRECTION"
-            android:textColor="@color/black"
-            android:textSize="40sp"
             />
-        <TextView
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/destination"
+            android:layout_width="300sp"
             android:layout_height="wrap_content"
-            android:text="DIRECTION"
+            android:layout_gravity="center"
+            android:hint="Search destination"
+            android:textColorHint="#807D7D"
             android:textColor="@color/black"
-            android:textSize="40sp"
+            android:drawableLeft="@drawable/destination_icon"
+            android:textSize="24sp"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DIRECTION"
-            android:textColor="@color/black"
-            android:textSize="40sp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DIRECTION"
-            android:textColor="@color/black"
-            android:textSize="40sp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DIRECTION"
-            android:textColor="@color/black"
-            android:textSize="40sp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DIRECTION"
-            android:textColor="@color/black"
-            android:textSize="40sp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DIRECTION"
-            android:textColor="@color/black"
-            android:textSize="40sp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DIRECTION"
-            android:textColor="@color/black"
-            android:textSize="40sp"
-            />
+
 
 
     </LinearLayout>
