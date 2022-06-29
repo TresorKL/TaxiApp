@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
+
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open_nav,R.string.close_nav);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -45,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
 // DISPLAY The first Fragment (which is the MAP)
 //------------------------------------------------------------------------------------------------
 
-        MapsFragment mapsFragment = new MapsFragment () ;
-        FragmentManager manager = getSupportFragmentManager () ;
+        MapsFragment mapsFragment = new MapsFragment();
+        FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()
                 .replace(R.id.firstLayout, mapsFragment, mapsFragment.getTag())
                 .commit();
@@ -54,13 +55,12 @@ public class MainActivity extends AppCompatActivity {
 //------------------------------------------------------------------------------------------------
 // DISPLAY The second Fragment
 //------------------------------------------------------------------------------------------------
-        Bottom bottom = new Bottom () ;
-        FragmentManager managerBtm = getSupportFragmentManager () ;
+        Bottom bottom = new Bottom();
+        FragmentManager managerBtm = getSupportFragmentManager();
         managerBtm.beginTransaction()
-                .replace(R.id.secondLayout, bottom,  bottom.getTag())
+                .replace(R.id.secondLayout, bottom, bottom.getTag())
                 .commit();
     }
-
 
 
 }
