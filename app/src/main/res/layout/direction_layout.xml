@@ -21,9 +21,11 @@
             android:layout_gravity="center"
             android:hint="Search pick-up location"
             android:textColorHint="#807D7D"
+            android:textFontWeight="40"
             android:drawableLeft="@drawable/current_location"
             android:textColor="@color/black"
             android:textSize="24sp"
+
 
             />
         <EditText
@@ -38,11 +40,15 @@
             android:textSize="24sp"
             />
         <Button
-            android:layout_width="wrap_content"
+            android:layout_margin="20sp"
+            android:layout_gravity="center"
+            android:layout_width="330sp"
             android:layout_height="wrap_content"
             android:textSize="23sp"
-            android:text="SEND"
-            android:id="@+id/send"
+            android:textColor="@color/white"
+            android:text="PROCEED"
+            android:id="@+id/proceedTrip"
+            android:background="@drawable/style_trip_btn"
               />
 
 

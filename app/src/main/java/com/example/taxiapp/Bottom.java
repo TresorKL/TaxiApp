@@ -76,7 +76,7 @@ public class Bottom extends Fragment {
                     EditText pickup = dialog.findViewById(R.id.pickUp);
                     Place place = Autocomplete.getPlaceFromIntent(result.getData());
                     pickup.setText(place.getAddress());
-
+                   // pickup.setVisibility(view.GONE);
 
                 } else if (result.getResultCode() == AutocompleteActivity.RESULT_ERROR) {
                     Status status = Autocomplete.getStatusFromIntent(result.getData());
@@ -98,7 +98,7 @@ public class Bottom extends Fragment {
                     Place place = Autocomplete.getPlaceFromIntent(result.getData());
                     // set destination address text
                     destination.setText(place.getAddress());
-
+                    //destination.setVisibility(view.GONE);
                     //store the place result object
                     directionPoints[0] = place;
 
@@ -118,7 +118,7 @@ public class Bottom extends Fragment {
             @Override
             public void onClick(View view) {
 
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.direction_layout);
                 dialog.show();
                 dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -127,10 +127,17 @@ public class Bottom extends Fragment {
                 dialog.getWindow().setGravity(Gravity.BOTTOM);
 
                 // access direction_layout views
-                Button send = (Button) dialog.findViewById(R.id.send);
+                Button proceedTrip = (Button) dialog.findViewById(R.id.proceedTrip);
                 EditText pickup = (EditText) dialog.findViewById(R.id.pickUp);
                 EditText destination = (EditText) dialog.findViewById(R.id.destination);
 
+                proceedTrip.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent nextIntent = new Intent(getContext(),secondActivity.class);
+                        startActivity(nextIntent);
+                    }
+                });
 
                 //------------------------------------------------------------
                 // Get places from google place API

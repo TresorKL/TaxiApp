@@ -19,7 +19,7 @@
                 android:layout_height="65sp"
                 android:layout_marginTop="10sp"
                 android:text="Where to"
-                android:textSize="30sp"
+                android:textSize="27sp"
                 android:textAlignment="textStart"
                 android:background="@drawable/style_where_btn"
                 android:textColor="@color/black"

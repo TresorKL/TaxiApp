@@ -35,21 +35,21 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.List;
 
-public class MapsFragment extends Fragment  {
-    private Location currentLocation ;
+public class MapsFragment extends Fragment {
+    private Location currentLocation;
     LocationRequest mLocationRequest;
     SupportMapFragment supportMapFragment;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
-    private static final int PERMISSION_REQUEST_CODE =1000;
+    private static final int PERMISSION_REQUEST_CODE = 1000;
 
-    public Location getCurrentL(){
+    public Location getCurrentL() {
         return currentLocation;
     }
-    public void setCurrentLocation(Location currentLocation){
-        this.currentLocation=currentLocation;
-    }
 
+    public void setCurrentLocation(Location currentLocation) {
+        this.currentLocation = currentLocation;
+    }
 
 
     @Nullable
@@ -59,14 +59,14 @@ public class MapsFragment extends Fragment  {
                              @Nullable Bundle savedInstanceState) {
 
 
-       View view =inflater.inflate(R.layout.fragment_maps, container, false);
+        View view = inflater.inflate(R.layout.fragment_maps, container, false);
 
-        fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(getActivity());
-        supportMapFragment =(SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
         getCurrentLocation();
 
-       return  view;
+        return view;
     }
 
 
@@ -87,38 +87,35 @@ public class MapsFragment extends Fragment  {
 //    };
 
 
-
-
     private void getCurrentLocation() {
 
 
-        if(ContextCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-          &&ContextCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             @SuppressLint("MissingPermission") Task<Location> task = fusedLocationProviderClient.getLastLocation();
 
             task.addOnSuccessListener(new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(final Location location) {
-                     //  if(location!=null){
+                    //  if(location!=null){
 
-                           currentLocation=location;
+                    currentLocation = location;
 
-                           supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-                               @Override
-                               public void onMapReady(@NonNull GoogleMap googleMap) {
-                                   getCurrentLocation();
+                    supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+                        @Override
+                        public void onMapReady(@NonNull GoogleMap googleMap) {
+                            getCurrentLocation();
 
-                               LatLng latLng = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+                            LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
 
+                            googleMap.addMarker(new MarkerOptions().position(latLng).title("you are here"));
 
-                                   googleMap.addMarker(new MarkerOptions().position(latLng).title("you are here"));
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f));
+                        }
+                    });
 
-                                   googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16.0f));
-                               }
-                           });
-
-                           //https://www.google.com/maps/place/Googleplex,+1600+Amphitheatre+Pkwy,+Mountain+View,+CA+94043,+United+States/@37.4219983,-122.084,17z/data=!4m2!3m1!1s0x808fba02425dad8f:0x6c296c66619367e0?source=mlgmmupgrade
+                    //https://www.google.com/maps/place/Googleplex,+1600+Amphitheatre+Pkwy,+Mountain+View,+CA+94043,+United+States/@37.4219983,-122.084,17z/data=!4m2!3m1!1s0x808fba02425dad8f:0x6c296c66619367e0?source=mlgmmupgrade
 
 
 //                     Toast.makeText(getContext()," "+getCurrentL().getLongitude(),Toast.LENGTH_LONG).show();
@@ -134,30 +131,30 @@ public class MapsFragment extends Fragment  {
 //                               ex.printStackTrace();
 //                           }
 
-                         //  Toast.makeText(getContext(),address.getCountryName()+":  "+address.getLocality(),Toast.LENGTH_LONG).show();
-                       //}
+                    //  Toast.makeText(getContext(),address.getCountryName()+":  "+address.getLocality(),Toast.LENGTH_LONG).show();
+                    //}
                 }
 
             });
 
-        }else {
+        } else {
             requestPermission();
 
         }
 
     }
 
- 
-    public Boolean isLocationPermissionGranted(){
-        if(ContextCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED){
+
+    public Boolean isLocationPermissionGranted() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
             return true;
-        }else{
-           return false;
+        } else {
+            return false;
         }
     }
 
-    private void requestPermission(){
-        ActivityCompat.requestPermissions(getActivity(),new String[] {Manifest.permission.ACCESS_FINE_LOCATION},101);
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
     }
 
 

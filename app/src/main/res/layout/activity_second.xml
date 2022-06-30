@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".secondActivity">
+
+
+
+
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            android:id="@+id/toolbar"-->
+<!--            android:layout_width="50sp"-->
+<!--            android:layout_height="50sp"-->
+<!--            android:elevation="10sp"-->
+<!--            android:background="@drawable/style_toolbar"-->
+<!--            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
+<!--            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+<!--            />-->
+
+        <LinearLayout
+
+            android:id="@+id/layout1Activity2"
+            android:layout_width="match_parent"
+            android:layout_height="535sp"
+            android:background="@color/black"
+            android:orientation="vertical">
+
+<fragment
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:name="com.google.android.gms.maps.MapFragment"
+    android:id="@+id/map2"
+        />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout2Activity2"
+            android:layout_width="match_parent"
+            android:layout_height="200sp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/style_bottom_layout"
+            android:orientation="vertical">
+
+
+        </LinearLayout>
+
+
+
+
+
+
+</RelativeLayout>

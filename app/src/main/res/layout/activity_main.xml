@@ -49,17 +49,15 @@
             android:orientation="vertical">
 
 
-
-
         </LinearLayout>
 
 
         <LinearLayout
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/style_bottom_layout"
             android:id="@+id/secondLayout"
             android:layout_width="match_parent"
             android:layout_height="200sp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/style_bottom_layout"
             android:orientation="vertical">
 
 
