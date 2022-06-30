@@ -39,11 +39,7 @@ public class secondActivity extends AppCompatActivity implements OnMapReadyCallb
         String url =getUrl(place1.getPosition(), place2.getPosition(), "driving");
         new FetchURL(secondActivity.this).execute(url, "driving");
 
-//        SecondMapFragment secondMapFragment = new SecondMapFragment();
-//        FragmentManager manager = getSupportFragmentManager();
-//        manager.beginTransaction()
-//                .replace(R.id.layout1Activity2, secondMapFragment, secondMapFragment.getTag())
-//                .commit();
+
     }
 
     private String getUrl(LatLng origin, LatLng dest, String directionMode) {

@@ -72,11 +72,12 @@ public class Bottom extends Fragment {
 
                 if (result != null) {
 
-                    // dialog.setContentView(R.layout.direction_layout);
-                    EditText pickup = dialog.findViewById(R.id.pickUp);
-                    Place place = Autocomplete.getPlaceFromIntent(result.getData());
-                    pickup.setText(place.getAddress());
-                   // pickup.setVisibility(view.GONE);
+                    if (result.getResultCode() != 0) {
+                        EditText pickup = dialog.findViewById(R.id.pickUp);
+                        Place place = Autocomplete.getPlaceFromIntent(result.getData());
+                        pickup.setText(place.getAddress());
+                    }
+
 
                 } else if (result.getResultCode() == AutocompleteActivity.RESULT_ERROR) {
                     Status status = Autocomplete.getStatusFromIntent(result.getData());
@@ -90,17 +91,16 @@ public class Bottom extends Fragment {
         ActivityResultLauncher<Intent> starDestinationResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
-
+                Place place = null;
                 if (result != null) {
+                    if (result.getResultCode() != 0) {
 
+                        EditText destination = dialog.findViewById(R.id.destination);
+                        place = Autocomplete.getPlaceFromIntent(result.getData());
 
-                    EditText destination = dialog.findViewById(R.id.destination);
-                    Place place = Autocomplete.getPlaceFromIntent(result.getData());
-                    // set destination address text
-                    destination.setText(place.getAddress());
-                    //destination.setVisibility(view.GONE);
-                    //store the place result object
-                    directionPoints[0] = place;
+                        destination.setText(place.getAddress());
+
+                    }
 
                 } else if (result.getResultCode() == AutocompleteActivity.RESULT_ERROR) {
                     Status status = Autocomplete.getStatusFromIntent(result.getData());
@@ -134,7 +134,7 @@ public class Bottom extends Fragment {
                 proceedTrip.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent nextIntent = new Intent(getContext(),secondActivity.class);
+                        Intent nextIntent = new Intent(getContext(), secondActivity.class);
                         startActivity(nextIntent);
                     }
                 });
