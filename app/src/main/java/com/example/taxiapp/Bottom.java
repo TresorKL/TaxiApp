@@ -12,6 +12,7 @@ import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -52,6 +53,8 @@ import java.util.List;
 public class Bottom extends Fragment {
 
     SharedPreferences placesPreference;
+    Location startPoint = new Location("location 1");
+    Location endPoint= new Location("location 2");
     UserPlace firstPlace = new UserPlace();
     UserPlace secondPlace = new UserPlace();
 
@@ -98,6 +101,12 @@ public class Bottom extends Fragment {
                         editor.putString("firstPlace", json);
                         editor.commit();
 
+
+                        // Setting location so we can be able to determine the distance between 2 locations
+                        startPoint.setLatitude(place.getLatLng().latitude);
+                        startPoint.setLongitude(place.getLatLng().longitude);
+
+
                     }
 
 
@@ -132,6 +141,12 @@ public class Bottom extends Fragment {
                         String json = gson.toJson(secondPlace);
                         editor.putString("secondPlace", json);
                         editor.commit();
+
+
+
+                        // Setting location so we can be able to determine the distance between 2 locations
+                        endPoint.setLatitude(place.getLatLng().latitude);
+                        endPoint.setLongitude(place.getLatLng().longitude);
 
                     }
 
@@ -175,8 +190,19 @@ public class Bottom extends Fragment {
                     public void onClick(View view) {
 
                         if(firstPlace.getAddress()!=null&&secondPlace.getAddress()!=null){
-                        Intent nextIntent = new Intent(getContext(), secondActivity.class);
-                        startActivity(nextIntent);
+
+                        // getting distance of the trip in meters
+                        double distanceInMeter = startPoint.distanceTo(endPoint);
+
+                       double distanceInKm = distanceInMeter * 0.001;
+
+                         if(distanceInKm <45) {
+
+                             Intent nextIntent = new Intent(getContext(), secondActivity.class);
+                             startActivity(nextIntent);
+                         }else{
+                             Toast.makeText(getContext(),"INVALID TRIP THE DISTANCE IS TOO LONG "+distanceInKm+"Km",Toast.LENGTH_SHORT).show();
+                         }
                         }else{
                             Toast.makeText(getContext(),"PLEASE SPECIFY ALL THE LOCATIONS",Toast.LENGTH_SHORT).show();
                         }
