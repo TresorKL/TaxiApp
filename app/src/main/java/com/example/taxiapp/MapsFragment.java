@@ -1,5 +1,7 @@
 package com.example.taxiapp;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -8,6 +10,8 @@ import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -19,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.taxiapp.userplace.UserPlace;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationServices;
@@ -32,14 +37,19 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.gson.Gson;
 
 import java.util.List;
 
 public class MapsFragment extends Fragment {
     private Location currentLocation;
     LocationRequest mLocationRequest;
+    UserPlace firstPlace = new UserPlace();
     SupportMapFragment supportMapFragment;
 
+   // SharedPreferences placesPreference = getActivity().getPreferences(MODE_PRIVATE);
+    SharedPreferences placesPreference;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int PERMISSION_REQUEST_CODE = 1000;
 
@@ -63,31 +73,17 @@ public class MapsFragment extends Fragment {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-
+       // placesPreference = getActivity().getSharedPreferences("MyUserPrefs", getContext().MODE_PRIVATE);
         getCurrentLocation();
 
         return view;
     }
 
 
-//    OnMapReadyCallback callback = new OnMapReadyCallback() {
-//
-//        @Override
-//        public void onMapReady(GoogleMap googleMap) {
-//            getCurrentLocation();
-//            LatLng latLng = new LatLng(25.75852,28.20515);
-//            googleMap.addMarker(new MarkerOptions().position(latLng).title("My Location"));
-//            //googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-//            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
-//
-//
-//        }
-//
-//
-//    };
-
-
     private void getCurrentLocation() {
+
+        // initialize places preferences
+        placesPreference = getActivity().getSharedPreferences("placePreferences", Context.MODE_PRIVATE);
 
 
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
@@ -102,10 +98,33 @@ public class MapsFragment extends Fragment {
 
                     currentLocation = location;
 
+                    //----------------------------------------------
+                    //Store current location inside share preferences
+                    //----------------------------------------------
+                    firstPlace.setLatitude(currentLocation.getLatitude());
+                    firstPlace.setLongitude(currentLocation.getLongitude());
+
+                    Address address=null;
+                    Geocoder geocoder = new Geocoder(getContext());
+                    try {
+                        List<Address> addressList=geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+                        address=addressList.get(0);
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                    }
+                    firstPlace.setAddress(address.getLocality());
+
+                    SharedPreferences.Editor editor = placesPreference.edit();
+                    Gson gson = new Gson();
+                    String json = gson.toJson(firstPlace);
+                    editor.putString("firstPlace", json);
+                    editor.commit();
+
+
                     supportMapFragment.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(@NonNull GoogleMap googleMap) {
-                            getCurrentLocation();
+
 
                             LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
 
@@ -115,24 +134,6 @@ public class MapsFragment extends Fragment {
                         }
                     });
 
-                    //https://www.google.com/maps/place/Googleplex,+1600+Amphitheatre+Pkwy,+Mountain+View,+CA+94043,+United+States/@37.4219983,-122.084,17z/data=!4m2!3m1!1s0x808fba02425dad8f:0x6c296c66619367e0?source=mlgmmupgrade
-
-
-//                     Toast.makeText(getContext()," "+getCurrentL().getLongitude(),Toast.LENGTH_LONG).show();
-//                           Address address=null;
-//                           Geocoder geocoder = new Geocoder(getContext());
-//                           try {
-//
-//                                List<Address> addressList=geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-//                             //  List<Address> addressList=geocoder.getFromLocation(-25.758062186313445,28.204679632844414, 1);
-//                               address=addressList.get(0);
-//                          Toast.makeText(getContext(),address.getCountryName()+":  "+address.getLocality(),Toast.LENGTH_LONG).show();
-//                           }catch (Exception ex){
-//                               ex.printStackTrace();
-//                           }
-
-                    //  Toast.makeText(getContext(),address.getCountryName()+":  "+address.getLocality(),Toast.LENGTH_LONG).show();
-                    //}
                 }
 
             });
@@ -156,6 +157,5 @@ public class MapsFragment extends Fragment {
     private void requestPermission() {
         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
     }
-
 
 }

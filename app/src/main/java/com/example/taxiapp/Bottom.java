@@ -1,5 +1,7 @@
 package com.example.taxiapp;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -8,6 +10,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -31,12 +35,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.taxiapp.userplace.UserPlace;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,8 +51,9 @@ import java.util.List;
 
 public class Bottom extends Fragment {
 
-    SharedPreferences sharedPreferences;
-    Place[] directionPoints = new Place[2];
+    SharedPreferences placesPreference;
+    UserPlace firstPlace = new UserPlace();
+    UserPlace secondPlace = new UserPlace();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,8 +64,9 @@ public class Bottom extends Fragment {
         View view = inflater.inflate(R.layout.fragment_bottom, container, false);
 
         // initialize sharedPreferences;
-        sharedPreferences = getActivity().getSharedPreferences("MyUserPrefs", Context.MODE_PRIVATE);
 
+        //placesPreference = getActivity().getPreferences(MODE_PRIVATE);
+        placesPreference = getActivity().getSharedPreferences("placePreferences", Context.MODE_PRIVATE);
         Button whereTo = view.findViewById(R.id.whereTo);
 
         //------------------------------------------------------------------------------------------------
@@ -75,7 +83,21 @@ public class Bottom extends Fragment {
                     if (result.getResultCode() != 0) {
                         EditText pickup = dialog.findViewById(R.id.pickUp);
                         Place place = Autocomplete.getPlaceFromIntent(result.getData());
+
                         pickup.setText(place.getAddress());
+
+                        //----------------------------------------------
+                        //Store first place inside share preferences
+                        //----------------------------------------------
+                        firstPlace.setLatitude(place.getLatLng().latitude);
+                        firstPlace.setLongitude(place.getLatLng().longitude);
+                        firstPlace.setAddress(place.getAddress());
+                        SharedPreferences.Editor editor = placesPreference.edit();
+                        Gson gson = new Gson();
+                        String json = gson.toJson(firstPlace);
+                        editor.putString("firstPlace", json);
+                        editor.commit();
+
                     }
 
 
@@ -97,8 +119,19 @@ public class Bottom extends Fragment {
 
                         EditText destination = dialog.findViewById(R.id.destination);
                         place = Autocomplete.getPlaceFromIntent(result.getData());
-
                         destination.setText(place.getAddress());
+
+                        //----------------------------------------------
+                        //Store first place inside share preferences
+                        //----------------------------------------------
+                        secondPlace.setLatitude(place.getLatLng().latitude);
+                        secondPlace.setLongitude(place.getLatLng().longitude);
+                        secondPlace.setAddress(place.getAddress());
+                        SharedPreferences.Editor editor = placesPreference.edit();
+                        Gson gson = new Gson();
+                        String json = gson.toJson(secondPlace);
+                        editor.putString("secondPlace", json);
+                        editor.commit();
 
                     }
 
@@ -131,11 +164,22 @@ public class Bottom extends Fragment {
                 EditText pickup = (EditText) dialog.findViewById(R.id.pickUp);
                 EditText destination = (EditText) dialog.findViewById(R.id.destination);
 
+                // Initialize pickup location to current location
+                Gson gson = new Gson();
+                String json = placesPreference.getString("firstPlace", "");
+                UserPlace firstPlace = gson.fromJson(json, UserPlace.class);
+                pickup.setText(firstPlace.getAddress());
+
                 proceedTrip.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
+                        if(firstPlace.getAddress()!=null&&secondPlace.getAddress()!=null){
                         Intent nextIntent = new Intent(getContext(), secondActivity.class);
                         startActivity(nextIntent);
+                        }else{
+                            Toast.makeText(getContext(),"PLEASE SPECIFY ALL THE LOCATIONS",Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
