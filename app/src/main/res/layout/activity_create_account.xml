@@ -76,7 +76,7 @@
             android:textSize="22sp" />
 
         <Button
-            android:id="@+id/goBtn"
+            android:id="@+id/register"
             android:layout_width="200sp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
