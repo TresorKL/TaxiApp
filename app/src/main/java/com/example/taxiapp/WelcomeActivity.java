@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +31,7 @@ public class WelcomeActivity extends AppCompatActivity {
     EditText numberInput;
     SharedPreferences userPreferences;
     String phoneNumber;
+    TextView createAccount;
     ProgressBar progressbar;
 
     @Override
@@ -37,19 +39,27 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        numberInput = findViewById(R.id.userNum);
-        progressbar = findViewById(R.id.progressbar);
-        int oldUserNum = 0;
-        userPreferences = getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
-
-        oldUserNum = userPreferences.getInt("userNum", 1);
+//        numberInput = findViewById(R.id.userNum);
+//        progressbar = findViewById(R.id.progressbar);
+//        int oldUserNum = 0;
+//        userPreferences = getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
+//
+//        oldUserNum = userPreferences.getInt("userNum", 1);
 
 //        if(oldUserNum==672348817){
 //            Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
 //            startActivity(intent);
 //        }
-
+        createAccount= findViewById(R.id.createAccount);
         goBtn = findViewById(R.id.goBtn);
+
+        createAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(WelcomeActivity.this,CreateAccountActivity.class);
+                startActivity(intent);
+            }
+        });
 
         goBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,12 +75,12 @@ public class WelcomeActivity extends AppCompatActivity {
 //
 //
 //
-//                Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
+                startActivity(intent);
 
-                phoneNumber = numberInput.getText().toString();
+               // phoneNumber = numberInput.getText().toString();
 
-                sendVerificationCode(phoneNumber);
+                //sendVerificationCode(phoneNumber);
 
 
             }
