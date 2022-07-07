@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+
 //------------------------------------------------------------------------------------------------
 // DISPLAY The first Fragment (which is the MAP)
 //------------------------------------------------------------------------------------------------

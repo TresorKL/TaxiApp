@@ -4,54 +4,172 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".secondActivity">
+    tools:context=".secondActivity"
+
+    >
 
 
+    <!--        <androidx.appcompat.widget.Toolbar-->
+    <!--            android:id="@+id/toolbar"-->
+    <!--            android:layout_width="50sp"-->
+    <!--            android:layout_height="50sp"-->
+    <!--            android:elevation="10sp"-->
+    <!--            android:background="@drawable/style_toolbar"-->
+    <!--            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
+    <!--            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+    <!--            />-->
 
+    <LinearLayout
 
-<!--        <androidx.appcompat.widget.Toolbar-->
-<!--            android:id="@+id/toolbar"-->
-<!--            android:layout_width="50sp"-->
-<!--            android:layout_height="50sp"-->
-<!--            android:elevation="10sp"-->
-<!--            android:background="@drawable/style_toolbar"-->
-<!--            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
-<!--            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
-<!--            />-->
+        android:id="@+id/layout1Activity2"
+        android:layout_width="match_parent"
+        android:layout_height="535sp"
+        android:background="@color/black"
+        android:orientation="vertical">
 
-        <LinearLayout
-
-            android:id="@+id/layout1Activity2"
+        <fragment
+            android:id="@+id/map2"
+            android:name="com.google.android.gms.maps.MapFragment"
             android:layout_width="match_parent"
-            android:layout_height="535sp"
-            android:background="@color/black"
-            android:orientation="vertical">
-
-<fragment
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:name="com.google.android.gms.maps.MapFragment"
-    android:id="@+id/map2"
-        />
+            android:layout_height="match_parent" />
 
 
-        </LinearLayout>
+    </LinearLayout>
 
 
-        <LinearLayout
-            android:id="@+id/layout2Activity2"
-            android:layout_width="match_parent"
-            android:layout_height="200sp"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/style_bottom_layout"
-            android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/layout2Activity2"
+        android:layout_width="match_parent"
+        android:layout_height="210sp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/style_bottom_layout"
+        android:orientation="vertical"
+
+        >
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
 
-        </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/go"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4sp"
+                    android:background="@drawable/style_prices"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="80sp"
+                        android:layout_height="80sp"
+                        android:layout_margin="3sp"
+                        android:src="@drawable/go_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="26sp"
+                        android:text="GO"
+                        android:textColor="@color/black"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/goPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="140sp"
+                        android:text="R39"
+                        android:textColor="@color/black"
+                        android:textSize="30sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/vip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4sp"
+                    android:background="@drawable/style_prices"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="80sp"
+                        android:layout_height="80sp"
+                        android:layout_margin="3sp"
+                        android:src="@drawable/vip_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="22sp"
+                        android:text="VIP"
+                        android:textColor="@color/black"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/vipPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="140sp"
+                        android:text="R130"
+                        android:textColor="@color/black"
+                        android:textSize="30sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/van"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4sp"
+                    android:background="@drawable/style_prices"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="80sp"
+                        android:layout_height="80sp"
+                        android:layout_margin="3sp"
+                        android:src="@drawable/van_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="26sp"
+                        android:text="Van"
+                        android:textColor="@color/black"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/vanPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="140sp"
+                        android:text="R98"
+                        android:textColor="@color/black"
+                        android:textSize="30sp" />
+                    android:layout_gravity="center_vertical"
+                </LinearLayout>
 
 
+            </LinearLayout>
 
 
+        </ScrollView>
+
+
+    </LinearLayout>
 
 
 </RelativeLayout>

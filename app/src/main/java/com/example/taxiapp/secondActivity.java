@@ -41,7 +41,7 @@ public class secondActivity extends AppCompatActivity implements OnMapReadyCallb
 
       //  placesPreference = getActivity().getPreferences(MODE_PRIVATE);
         MapFragment mapFragment = (MapFragment)getFragmentManager().findFragmentById(R.id.map2);
-        mapFragment.getMapAsync(this);
+       mapFragment.getMapAsync(this);
 
         // Initialize pickup location to current location
         Gson gson = new Gson();

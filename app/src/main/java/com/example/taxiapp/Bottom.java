@@ -183,6 +183,8 @@ public class Bottom extends Fragment {
                 Gson gson = new Gson();
                 String json = placesPreference.getString("firstPlace", "");
                 UserPlace firstPlace = gson.fromJson(json, UserPlace.class);
+                startPoint.setLatitude(firstPlace.getLatitude());
+                startPoint.setLongitude(firstPlace.getLongitude());
                 pickup.setText(firstPlace.getAddress());
 
                 proceedTrip.setOnClickListener(new View.OnClickListener() {
@@ -196,7 +198,7 @@ public class Bottom extends Fragment {
 
                        double distanceInKm = distanceInMeter * 0.001;
 
-                         if(distanceInKm <45) {
+                        if(distanceInKm <45) {
 
                              Intent nextIntent = new Intent(getContext(), secondActivity.class);
                              startActivity(nextIntent);
