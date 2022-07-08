@@ -33,7 +33,7 @@ String [] topDirections;
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-      //  holder.direction.setText(topDirections[position]);
+     //
         holder.direction.setText(topDirections[position]);
     }
 
