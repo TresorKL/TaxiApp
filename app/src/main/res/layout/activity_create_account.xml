@@ -38,7 +38,7 @@
             android:layout_height="45sp"
             android:layout_gravity="center"
             android:layout_marginTop="15sp"
-            android:background="@drawable/style_input_field"
+android:background="@drawable/input_fields"
             android:hint="  Name"
 
             android:textColor="@color/black"
@@ -52,7 +52,7 @@
             android:layout_height="45sp"
             android:layout_gravity="center"
             android:layout_marginTop="15sp"
-            android:background="@drawable/style_input_field"
+            android:background="@drawable/input_fields"
 
             android:hint="Email address"
             android:textColorHint="@color/quantum_grey"
@@ -67,7 +67,7 @@
             android:layout_height="45sp"
             android:layout_gravity="center"
             android:layout_marginTop="15sp"
-            android:background="@drawable/style_input_field"
+            android:background="@drawable/input_fields"
 
             android:hint="Password"
             android:textColorHint="@color/quantum_grey"
