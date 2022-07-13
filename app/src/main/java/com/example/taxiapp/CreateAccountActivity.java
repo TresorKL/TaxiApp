@@ -7,6 +7,8 @@ import androidx.core.content.res.ResourcesCompat;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -32,10 +34,9 @@ public class CreateAccountActivity extends AppCompatActivity {
     EditText email;
     EditText password;
     EditText userName;
-
+    FirebaseAuth auth = FirebaseAuth.getInstance();
     Button registerBtn;
-
-    FirebaseAuth auth;
+    DataProcessor dataProcessor = new DataProcessor(CreateAccountActivity.this, auth);
 
 
     @Override
@@ -43,109 +44,153 @@ public class CreateAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
 
-        auth = FirebaseAuth.getInstance();
+        // auth = FirebaseAuth.getInstance();
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         userName = findViewById(R.id.name);
 
+
         registerBtn = findViewById(R.id.register);
+        
+
+        // Style input fields when inputting...
 
 
-// Style input fields when inputting...
-        userName.setOnKeyListener(new View.OnKeyListener() {
+        userName.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+            public void beforeTextChanged(CharSequence s, int before, int after, int counter) {
+
                 Drawable green = ResourcesCompat.getDrawable(getResources(), R.drawable.style_input_field, null);
                 Drawable initial = ResourcesCompat.getDrawable(getResources(), R.drawable.input_fields, null);
-                if (!userName.getText().toString().isEmpty()) {
+                if (s.toString().trim().length() > 0) {
                     userName.setBackground(green);
+
+
                 } else {
                     userName.setBackground(initial);
                 }
-                return false;
+
+
             }
-        });
-        password.setOnKeyListener(new View.OnKeyListener() {
+
             @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
                 Drawable green = ResourcesCompat.getDrawable(getResources(), R.drawable.style_input_field, null);
                 Drawable initial = ResourcesCompat.getDrawable(getResources(), R.drawable.input_fields, null);
-                if (!password.getText().toString().isEmpty()) {
-                    password.setBackground(green);
+                if (s.toString().trim().length() > 0) {
+                    userName.setBackground(green);
+
                 } else {
+
+                    userName.setBackground(initial);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+
+
+        });
+
+
+        password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int before, int after, int counter) {
+
+                Drawable green = ResourcesCompat.getDrawable(getResources(), R.drawable.style_input_field, null);
+                Drawable initial = ResourcesCompat.getDrawable(getResources(), R.drawable.input_fields, null);
+                if (s.toString().trim().length() > 0) {
+                    password.setBackground(green);
+
+                } else {
+
                     password.setBackground(initial);
                 }
-                return false;
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int before, int after, int counter) {
+                Drawable green = ResourcesCompat.getDrawable(getResources(), R.drawable.style_input_field, null);
+                Drawable initial = ResourcesCompat.getDrawable(getResources(), R.drawable.input_fields, null);
+                if (s.toString().trim().length() > 0) {
+                    password.setBackground(green);
+
+                } else {
+
+                    password.setBackground(initial);
+                }
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 
 
-        email.setOnKeyListener(new View.OnKeyListener() {
+        email.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+            public void beforeTextChanged(CharSequence s, int before, int after, int counter) {
+
                 Drawable green = ResourcesCompat.getDrawable(getResources(), R.drawable.style_input_field, null);
                 Drawable initial = ResourcesCompat.getDrawable(getResources(), R.drawable.input_fields, null);
-                if (!email.getText().toString().isEmpty()) {
+                if (s.toString().trim().length() > 0) {
                     email.setBackground(green);
+
                 } else {
+
                     email.setBackground(initial);
                 }
-                return false;
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                Drawable green = ResourcesCompat.getDrawable(getResources(), R.drawable.style_input_field, null);
+                Drawable initial = ResourcesCompat.getDrawable(getResources(), R.drawable.input_fields, null);
+                if (s.toString().trim().length() > 0) {
+                    email.setBackground(green);
+
+                } else {
+
+                    email.setBackground(initial);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Drawable warningStyle = ResourcesCompat.getDrawable(getResources(), R.drawable.style_warning_input, null);
+
                 String emailText = email.getText().toString();
                 String passwordText = password.getText().toString();
                 String userNameText = userName.getText().toString();
-                registerUser(emailText, passwordText, userNameText);
-            }
-        });
 
-        // new InputFieldListiner(CreateAccountActivity.this, getApplicationContext(), email, userName, password).run();
 
-    }
-
-    private void registerUser(String email, String password, String userName) {
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(CreateAccountActivity.this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                if (task.isSuccessful()) {
-                    storeUserDate(email, userName);
-                    Toast.makeText(CreateAccountActivity.this, "Account successfully created ", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(CreateAccountActivity.this, WelcomeActivity.class);
-                    startActivity(intent);
+                if (!emailText.isEmpty() && !passwordText.isEmpty() && !userNameText.isEmpty() && emailText.contains(".com")) {
+                    // register user
+                    dataProcessor.registerUser(emailText, passwordText, userNameText);
+                } else if (emailText.isEmpty()) {
+                    email.setBackground(warningStyle);
+                } else if (passwordText.isEmpty()) {
+                    password.setBackground(warningStyle);
+                } else if (userNameText.isEmpty()) {
+                    userName.setBackground(warningStyle);
                 } else {
-                    Toast.makeText(CreateAccountActivity.this, "Account creation failed ", Toast.LENGTH_LONG).show();
+                    email.setBackground(warningStyle);
                 }
-
             }
-
-
         });
 
-
     }
 
-    public void storeUserDate(String email, String userName) {
-
-
-        DataProcessor dataProcessor = new DataProcessor();
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
-
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("name", userName);
-        map.put("email", email);
-
-        String userId = dataProcessor.generateUserId(email);
-
-        FirebaseDatabase.getInstance().getReference().child("Users").child(userId).updateChildren(map);
-
-
-    }
 
 }

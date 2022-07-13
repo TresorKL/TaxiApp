@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -11,61 +12,44 @@ import androidx.core.content.res.ResourcesCompat;
 import com.example.taxiapp.CreateAccountActivity;
 import com.example.taxiapp.R;
 
-public class InputFieldListiner extends Thread{
+public class InputFieldListiner extends Thread {
     EditText email, userName, password;
     Context context;
+    Button registerBtn;
     Activity activity;
 
-    public InputFieldListiner(Activity activity, Context context,EditText email,EditText userName,EditText password ){
+    public InputFieldListiner( EditText email,EditText userName,EditText password, Button registerBtn) {
 
-        this.context=context;
+
+
+        this.registerBtn = registerBtn;
         this.email=email;
-        this.password=password;
         this.userName=userName;
-        this.activity=activity;
-
-
+        this.password=password;
 
 
     }
 
-    public void styleInputs(){
+    public void styleRegisterBtn() {
         Drawable green = ResourcesCompat.getDrawable(context.getResources(), R.drawable.style_input_field, null);
         Drawable initial = ResourcesCompat.getDrawable(context.getResources(), R.drawable.input_fields, null);
 
 
-    if (!userName.getText().toString().isEmpty()) {
-        userName.setBackground(green);
-    } else{
-        userName.setBackground(initial);
-    }
 
-    if (!email.getText().toString().isEmpty()) {
-        email.setBackground(green);
-    } else  {
-        email.setBackground(initial);
-    }
-
-    if (!password.getText().toString().isEmpty()) {
-        password.setBackground(green);
-    } else {
-        password.setBackground(initial);
-    }
 
     }
 
 
-    public void run(){
+    public void run() {
 
 
-      // Activity activity =(Activity) context;
-       while(true) {
+        // Activity activity =(Activity) context;
+        while (true) {
 
-             styleInputs();
 
-         }
+
+        }
     }
-
 
 
 }
