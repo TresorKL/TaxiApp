@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.taxiapp.processor.DataProcessor;
 import com.example.taxiapp.userplace.UserPlace;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -74,88 +75,16 @@ public class MapsFragment extends Fragment {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
        // placesPreference = getActivity().getSharedPreferences("MyUserPrefs", getContext().MODE_PRIVATE);
-        getCurrentLocation();
+
+        DataProcessor dataProcessor= new  DataProcessor( getContext(),currentLocation,  placesPreference,  supportMapFragment);
+        //getCurrentLocation();
+        dataProcessor.getCurrentLocation( fusedLocationProviderClient,  firstPlace);
 
         return view;
     }
 
 
-    private void getCurrentLocation() {
-
-        // initialize places preferences
-        placesPreference = getActivity().getSharedPreferences("placePreferences", Context.MODE_PRIVATE);
 
 
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-            @SuppressLint("MissingPermission") Task<Location> task = fusedLocationProviderClient.getLastLocation();
-
-            task.addOnSuccessListener(new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(final Location location) {
-                    //  if(location!=null){
-
-                    currentLocation = location;
-
-                    //----------------------------------------------
-                    //Store current location inside share preferences
-                    //----------------------------------------------
-                    firstPlace.setLatitude(currentLocation.getLatitude());
-                    firstPlace.setLongitude(currentLocation.getLongitude());
-
-                    Address address=null;
-                    Geocoder geocoder = new Geocoder(getContext());
-                    try {
-                        List<Address> addressList=geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
-                        address=addressList.get(0);
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                    }
-                    firstPlace.setAddress(address.getLocality());
-
-                    SharedPreferences.Editor editor = placesPreference.edit();
-                    Gson gson = new Gson();
-                    String json = gson.toJson(firstPlace);
-                    editor.putString("firstPlace", json);
-                    editor.commit();
-
-
-                    supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-                        @Override
-                        public void onMapReady(@NonNull GoogleMap googleMap) {
-
-
-                            LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-
-                            googleMap.addMarker(new MarkerOptions().position(latLng).title("you are here"));
-
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f));
-                        }
-                    });
-
-                }
-
-            });
-
-        } else {
-            requestPermission();
-
-        }
-
-    }
-
-
-    public Boolean isLocationPermissionGranted() {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private void requestPermission() {
-        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-    }
 
 }

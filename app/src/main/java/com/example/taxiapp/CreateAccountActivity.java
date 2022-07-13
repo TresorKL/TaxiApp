@@ -51,7 +51,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
 
         registerBtn = findViewById(R.id.register);
-        
+
 
         // Style input fields when inputting...
 
