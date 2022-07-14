@@ -47,7 +47,16 @@ public class WelcomeActivity extends AppCompatActivity {
         String emailPreference;
         userPreferences = getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
 
-       
+        //-------------------------------------
+        //check if user has logged in before and give him/her access to the system
+        // without asking them login again
+        //-------------------------------------
+        emailPreference = userPreferences.getString("email","");
+        if(!emailPreference.isEmpty()){
+            Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
         auth = FirebaseAuth.getInstance();
 
         createAccount = findViewById(R.id.createAccount);
