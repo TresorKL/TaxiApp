@@ -200,8 +200,12 @@ public class Bottom extends Fragment {
 
                         if(distanceInKm <45) {
 
+                            int distanceNet=(int)distanceInKm;
+
                              Intent nextIntent = new Intent(getContext(), secondActivity.class);
+                             nextIntent.putExtra("distance", distanceNet);
                              startActivity(nextIntent);
+                             Toast.makeText(getContext(),"DISTANCE: " +distanceNet +" Km",Toast.LENGTH_SHORT).show();
                          }else{
                              Toast.makeText(getContext(),"INVALID TRIP THE DISTANCE IS TOO LONG "+distanceInKm+"Km",Toast.LENGTH_SHORT).show();
                          }

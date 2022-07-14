@@ -7,4 +7,5 @@ public interface DataProcessorInterface {
     public String generateUserId(String email);
     public void registerUser(String email, String password, String userName);
     public void getCurrentLocation(FusedLocationProviderClient fusedLocationProviderClient, UserPlace firstPlace);
+    public int[] determineTripPrices(int distance);
 }

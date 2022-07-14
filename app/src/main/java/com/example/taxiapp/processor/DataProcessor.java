@@ -54,6 +54,11 @@ public class DataProcessor implements DataProcessorInterface {
 
     }
 
+
+    public DataProcessor() {
+
+    }
+
     // This constructor is used in MapsFragment class
     public DataProcessor(Context context,Location currentLocation, SharedPreferences placesPreference, SupportMapFragment supportMapFragment) {
 
@@ -190,6 +195,28 @@ public class DataProcessor implements DataProcessorInterface {
 
     }
 
+    @Override
+    public int[] determineTripPrices(int distance) {
+
+        int [] prices=new int[3];
+
+
+
+        int goPrice= distance * 13;
+
+        int vipPercentage= (int)(goPrice * 0.15);
+        int vanPercentage=(int)(goPrice * 0.10);
+
+        int vipPrice = goPrice + vipPercentage;
+        int vanPrice = goPrice+vanPercentage;
+
+        prices[0]=goPrice;
+        prices[1]=vipPrice;
+        prices[2]=vanPrice;
+
+
+        return prices;
+    }
 
 
     public Boolean isLocationPermissionGranted() {

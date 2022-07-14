@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
+import com.example.taxiapp.processor.DataProcessor;
 import com.example.taxiapp.processor.FetchURL;
 import com.example.taxiapp.processor.TaskLoadedCallback;
 import com.example.taxiapp.userplace.UserPlace;
@@ -30,6 +32,8 @@ public class secondActivity extends AppCompatActivity implements OnMapReadyCallb
     SharedPreferences placesPreference;
     UserPlace firstPlace = new UserPlace();
     UserPlace secondPlace = new UserPlace();
+    TextView goPrice, vipPrice, vanPrice;
+
 
     // Button getDirection;
     private Polyline currentPolyline;
@@ -37,7 +41,10 @@ public class secondActivity extends AppCompatActivity implements OnMapReadyCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
+
+        DataProcessor dataProcessor =new DataProcessor();
         placesPreference = getSharedPreferences("placePreferences", Context.MODE_PRIVATE);;
+
 
       //  placesPreference = getActivity().getPreferences(MODE_PRIVATE);
         MapFragment mapFragment = (MapFragment)getFragmentManager().findFragmentById(R.id.map2);
@@ -50,6 +57,22 @@ public class secondActivity extends AppCompatActivity implements OnMapReadyCallb
 
         String json2 = placesPreference.getString("secondPlace", "");
         UserPlace secondPlace = gson.fromJson(json2, UserPlace.class);
+
+
+        Bundle extras = getIntent().getExtras();
+
+        int distanceNet = (int) extras.get("distance");
+        int[] prices= dataProcessor.determineTripPrices(distanceNet);
+
+        // display prices
+        goPrice = findViewById(R.id.goPrice);
+        vipPrice= findViewById(R.id.vipPrice);
+        vanPrice = findViewById(R.id.vanPrice);
+
+        goPrice.setText("R"+prices[0]);
+        vipPrice.setText("R"+prices[1]);
+        vanPrice.setText("R"+prices[2]);
+
 
 
 

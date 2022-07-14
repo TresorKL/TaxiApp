@@ -2,10 +2,12 @@ package com.example.taxiapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -51,9 +53,9 @@ public class WelcomeActivity extends AppCompatActivity {
         //check if user has logged in before and give him/her access to the system
         // without asking them login again
         //-------------------------------------
-        emailPreference = userPreferences.getString("email","");
-        if(!emailPreference.isEmpty()){
-            Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
+        emailPreference = userPreferences.getString("email", "");
+        if (!emailPreference.isEmpty()) {
+            Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }
@@ -77,11 +79,27 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Drawable warningStyle = ResourcesCompat.getDrawable(getResources(), R.drawable.style_warning_input, null);
 
                 String email = emailAccess.getText().toString();
                 String password = passwordAccess.getText().toString();
-                loginUser(auth, email, password);
 
+                if (!email.isEmpty() && !password.isEmpty()) {
+                    loginUser(auth, email, password);
+
+                } else if (email.isEmpty()) {
+                    emailAccess.setBackground(warningStyle);
+
+
+                } else if (password.isEmpty()) {
+                    passwordAccess.setBackground(warningStyle);
+
+                } else {
+
+                    emailAccess.setBackground(warningStyle);
+                    passwordAccess.setBackground(warningStyle);
+
+                }
 
 
             }
@@ -109,7 +127,8 @@ public class WelcomeActivity extends AppCompatActivity {
                     finish();
 
                 } else {
-                    Toast.makeText(WelcomeActivity.this, "INVALID LOGIN", Toast.LENGTH_LONG).show();
+                    Toast.makeText(WelcomeActivity.this, "INCORRECT PASSWORD OR EMAIL ADDRESS", Toast.LENGTH_LONG).show();
+
 
                 }
             }
