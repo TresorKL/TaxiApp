@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.taxiapp.CreateAccountActivity;
+import com.example.taxiapp.MainActivity;
 import com.example.taxiapp.WelcomeActivity;
 import com.example.taxiapp.userplace.UserPlace;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -188,6 +189,7 @@ public class DataProcessor implements DataProcessorInterface {
         }
 
     }
+
 
 
     public Boolean isLocationPermissionGranted() {

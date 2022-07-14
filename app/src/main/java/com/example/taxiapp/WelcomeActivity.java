@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
@@ -33,30 +34,32 @@ public class WelcomeActivity extends AppCompatActivity {
     String phoneNumber;
     TextView createAccount;
     ProgressBar progressbar;
+    EditText emailAccess, passwordAccess;
+    FirebaseAuth auth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-//        numberInput = findViewById(R.id.userNum);
-//        progressbar = findViewById(R.id.progressbar);
-//        int oldUserNum = 0;
-//        userPreferences = getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
-//
-//        oldUserNum = userPreferences.getInt("userNum", 1);
 
-//        if(oldUserNum==672348817){
-//            Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
-//            startActivity(intent);
-//        }
-        createAccount= findViewById(R.id.createAccount);
+        String emailPreference;
+        userPreferences = getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
+
+       
+        auth = FirebaseAuth.getInstance();
+
+        createAccount = findViewById(R.id.createAccount);
         goBtn = findViewById(R.id.goBtn);
+
+        passwordAccess = findViewById(R.id.passwordAccess);
+        emailAccess = findViewById(R.id.emailAccess);
 
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(WelcomeActivity.this,CreateAccountActivity.class);
+                Intent intent = new Intent(WelcomeActivity.this, CreateAccountActivity.class);
                 startActivity(intent);
             }
         });
@@ -65,93 +68,43 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-//                userNum= Integer.parseInt(numberInput.getText().toString());
-//
-//                SharedPreferences.Editor editor= userPreferences.edit();
-//
-//                editor.putInt("userNum",userNum);
-//                editor.commit();
-//
-//
-//
-//
-                Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
-                startActivity(intent);
 
-               // phoneNumber = numberInput.getText().toString();
+                String email = emailAccess.getText().toString();
+                String password = passwordAccess.getText().toString();
+                loginUser(auth, email, password);
 
-                //sendVerificationCode(phoneNumber);
 
 
             }
+
+
         });
 
     }
 
-    public void sendVerificationCode(String phoneNumber) {
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        PhoneAuthOptions options =
-                PhoneAuthOptions.newBuilder(mAuth)
-                        .setPhoneNumber("+27" + phoneNumber)       // Phone number to verify
-                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                        .setActivity(this)                 // Activity (for callback binding)
-                        .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
-                        .build();
-        PhoneAuthProvider.verifyPhoneNumber(options);
+    private void loginUser(FirebaseAuth auth, String email, String password) {
 
-    }
-
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
-
-        @Override
-        public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-            super.onCodeSent(s, forceResendingToken);
-
-            verificationCodBySystem = s;
-        }
-
-        @Override
-        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-            String code = phoneAuthCredential.getSmsCode();
-
-            if (code != null) {
-                progressbar.setVisibility(View.VISIBLE);
-                verifyCode(code);
-            }
-        }
-
-        @Override
-        public void onVerificationFailed(@NonNull FirebaseException e) {
-            Toast.makeText(WelcomeActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    public  void verifyCode(String code){
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationCodBySystem,code);
-        signInWithPhoneAuthCredential(credential);
-    }
-
-    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-
-        auth.signInWithCredential(credential).addOnCompleteListener(WelcomeActivity.this, new OnCompleteListener<AuthResult>() {
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
 
-                if(task.isSuccessful()){
-                 Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
-                 //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                 startActivity(intent);
-                }else{
-                    Toast.makeText(WelcomeActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+
+                    SharedPreferences.Editor editor = userPreferences.edit();
+                    editor.putString("email", email);
+                    editor.commit();
+
+
+                    Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                } else {
+                    Toast.makeText(WelcomeActivity.this, "INVALID LOGIN", Toast.LENGTH_LONG).show();
+
                 }
-
             }
         });
-
-
 
     }
 
