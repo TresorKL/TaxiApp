@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,8 @@ public class DataProcessor implements DataProcessorInterface {
     SupportMapFragment supportMapFragment;
     Context context;
     FirebaseAuth auth;
+    LocationManager locationManager;
+
 
     // this constructor is used in CreateAccountActivity
     public DataProcessor(Context context, FirebaseAuth auth) {
@@ -60,7 +63,7 @@ public class DataProcessor implements DataProcessorInterface {
     }
 
     // This constructor is used in MapsFragment class
-    public DataProcessor(Context context,Location currentLocation, SharedPreferences placesPreference, SupportMapFragment supportMapFragment) {
+    public DataProcessor(Context context, SharedPreferences placesPreference, SupportMapFragment supportMapFragment) {
 
         this.context=context;
         this.currentLocation=currentLocation;
@@ -128,63 +131,66 @@ public class DataProcessor implements DataProcessorInterface {
     //--------------------------------------------------------------------------------------
     // This method allows us to get current location of user
     //--------------------------------------------------------------------------------------
-    public void getCurrentLocation(FusedLocationProviderClient fusedLocationProviderClient, UserPlace firstPlace) {
+    public void getCurrentLocation(FusedLocationProviderClient fusedLocationProviderClient) {
 
         // initialize places preferences
-        placesPreference = context.getSharedPreferences("placePreferences", Context.MODE_PRIVATE);
+       placesPreference = context.getSharedPreferences("placePreferences", Context.MODE_PRIVATE);
 
 
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             @SuppressLint("MissingPermission") Task<Location> task = fusedLocationProviderClient.getLastLocation();
+           // Toast.makeText((Activity)context,task+" ",Toast.LENGTH_LONG).show();
 
             task.addOnSuccessListener(new OnSuccessListener<Location>() {
                 @Override
-                public void onSuccess(final Location location) {
-                    //  if(location!=null){
+                public void onSuccess( Location location) {
 
-                    currentLocation = location;
+                          currentLocation =  location;
 
-                    //----------------------------------------------
-                    //Store current location inside share preferences
-                    // We store it as object callled FirstPlace
-                    //----------------------------------------------
-                    firstPlace.setLatitude(currentLocation.getLatitude());
-                    firstPlace.setLongitude(currentLocation.getLongitude());
+                        //----------------------------------------------
+                        //Store current location inside share preferences
+                        // We store it as object called FirstPlace
+                        //----------------------------------------------
+                        UserPlace firstPlace = new UserPlace();
+                        firstPlace.setLatitude(currentLocation.getLatitude());
+                        firstPlace.setLongitude(currentLocation.getLongitude());
 
-                    Address address = null;
-                    Geocoder geocoder = new Geocoder(context);
-                    try {
-                        List<Address> addressList = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
-                        address = addressList.get(0);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    firstPlace.setAddress(address.getLocality());
-
-                    // we use Gson to store objects inside a sharedpreference
-                    SharedPreferences.Editor editor = placesPreference.edit();
-                    Gson gson = new Gson();
-                    String json = gson.toJson(firstPlace);
-                    editor.putString("firstPlace", json);
-                    editor.commit();
-
-
-                    supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-                        @Override
-                        public void onMapReady(@NonNull GoogleMap googleMap) {
-
-
-                            LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-
-                            googleMap.addMarker(new MarkerOptions().position(latLng).title("you are here"));
-
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f));
+                        Address address = null;
+                        Geocoder geocoder = new Geocoder(context);
+                        try {
+                            List<Address> addressList = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+                            address = addressList.get(0);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
-                    });
+                        firstPlace.setAddress(address.getLocality());
 
-                }
+                        // we use Gson to store objects inside a sharedpreference
+                        SharedPreferences.Editor editor = placesPreference.edit();
+                        Gson gson = new Gson();
+                        String json = gson.toJson(firstPlace);
+                        editor.putString("firstPlace", json);
+                        editor.commit();
+
+
+                        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+                            @Override
+                            public void onMapReady(@NonNull GoogleMap googleMap) {
+
+
+                                LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+
+                                googleMap.addMarker(new MarkerOptions().position(latLng).title("you are here"));
+
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f));
+                            }
+                        });
+
+                    }
+
+
 
             });
 
@@ -230,6 +236,7 @@ public class DataProcessor implements DataProcessorInterface {
     private void requestPermission() {
         ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
     }
+
 
 
 }

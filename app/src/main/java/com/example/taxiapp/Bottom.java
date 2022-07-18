@@ -182,16 +182,21 @@ public class Bottom extends Fragment {
                 // Initialize pickup location to current location
                 Gson gson = new Gson();
                 String json = placesPreference.getString("firstPlace", "");
+
                 UserPlace firstPlace = gson.fromJson(json, UserPlace.class);
-                startPoint.setLatitude(firstPlace.getLatitude());
-                startPoint.setLongitude(firstPlace.getLongitude());
-                pickup.setText(firstPlace.getAddress());
+                if(firstPlace!=null) {
+                    startPoint.setLatitude(firstPlace.getLatitude());
+                    startPoint.setLongitude(firstPlace.getLongitude());
+                    pickup.setText(firstPlace.getAddress());
+
+                }
 
                 proceedTrip.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
-                        if(firstPlace.getAddress()!=null&&secondPlace.getAddress()!=null){
+              
+                 if(!pickup.getText().toString().isEmpty()&&secondPlace.getAddress()!=null){
 
                         // getting distance of the trip in meters
                         double distanceInMeter = startPoint.distanceTo(endPoint);

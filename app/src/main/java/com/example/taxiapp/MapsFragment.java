@@ -31,6 +31,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -44,7 +45,7 @@ import com.google.gson.Gson;
 import java.util.List;
 
 public class MapsFragment extends Fragment {
-    private Location currentLocation;
+   // private Location currentLocation;
     LocationRequest mLocationRequest;
     UserPlace firstPlace = new UserPlace();
     SupportMapFragment supportMapFragment;
@@ -54,13 +55,7 @@ public class MapsFragment extends Fragment {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int PERMISSION_REQUEST_CODE = 1000;
 
-    public Location getCurrentL() {
-        return currentLocation;
-    }
 
-    public void setCurrentLocation(Location currentLocation) {
-        this.currentLocation = currentLocation;
-    }
 
 
     @Nullable
@@ -71,17 +66,27 @@ public class MapsFragment extends Fragment {
 
 
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
-
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        //LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-       // placesPreference = getActivity().getSharedPreferences("MyUserPrefs", getContext().MODE_PRIVATE);
+        // placesPreference = getActivity().getSharedPreferences("MyUserPrefs", getContext().MODE_PRIVATE);
 
-        DataProcessor dataProcessor= new  DataProcessor( getContext(),currentLocation,  placesPreference,  supportMapFragment);
+        // initialize places preferences
+        //placesPreference = getActivity().getSharedPreferences("placePreferences", Context.MODE_PRIVATE);
+
+    //    Toast.makeText(getContext(),fusedLocationProviderClient+" ",Toast.LENGTH_LONG).show();
+         DataProcessor dataProcessor= new  DataProcessor( getContext(),  placesPreference,  supportMapFragment);
         //getCurrentLocation();
-        dataProcessor.getCurrentLocation( fusedLocationProviderClient,  firstPlace);
+          dataProcessor.getCurrentLocation( fusedLocationProviderClient);
+
+
+
 
         return view;
     }
+
+
+
 
 
 

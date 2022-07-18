@@ -2,11 +2,16 @@ package com.example.taxiapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -44,6 +49,9 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
+
+        requestPermission();
 
 
         String emailPreference;
@@ -104,10 +112,17 @@ public class WelcomeActivity extends AppCompatActivity {
 
             }
 
-
         });
 
+
     }
+
+    private void requestPermission() {
+
+        ActivityCompat.requestPermissions(WelcomeActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+
+    }
+
 
     private void loginUser(FirebaseAuth auth, String email, String password) {
 
