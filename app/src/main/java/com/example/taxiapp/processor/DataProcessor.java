@@ -39,11 +39,12 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DataProcessor implements DataProcessorInterface {
 
     Location currentLocation;
-    SharedPreferences placesPreference;
+    SharedPreferences placesPreference, userPreferences;
     SupportMapFragment supportMapFragment;
     Context context;
     FirebaseAuth auth;
@@ -70,7 +71,9 @@ public class DataProcessor implements DataProcessorInterface {
         this.placesPreference=placesPreference;
         this.supportMapFragment=supportMapFragment;
     }
-
+    public DataProcessor(Context context) {
+        this.context=context;
+    }
 
     // extract dot from email address
     public String generateUserId(String email) {
@@ -124,6 +127,37 @@ public class DataProcessor implements DataProcessorInterface {
 
         FirebaseDatabase.getInstance().getReference().child("Users").child(userId).updateChildren(map);
 
+
+    }
+
+    public void StoreTrip(UserPlace from, UserPlace to, int distance, String date, int amountDue){
+        userPreferences = context.getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
+
+        String emailPreference = userPreferences.getString("email", "");
+        String userEmailId = generateUserId(emailPreference);
+
+        HashMap<String, Object> startPoint = new HashMap<>();
+        startPoint.put("pickupAddress", from.getAddress());
+        startPoint.put("longitude", from.getLongitude());
+        startPoint.put("latitude", from.getLatitude());
+
+
+        HashMap<String, Object> endPoint = new HashMap<>();
+        endPoint.put("pickupAddress", to.getAddress());
+        endPoint.put("longitude", to.getLongitude());
+        endPoint.put("latitude", to.getLatitude());
+
+
+        HashMap<String, Object> trip = new HashMap<>();
+
+        trip.put("date",date);
+        trip.put("distance",distance);
+        trip.put("amountDue",amountDue);
+        trip.put("startPoint", startPoint);
+        trip.put("endPoint",endPoint);
+
+
+        FirebaseDatabase.getInstance().getReference().child("Users").child(userEmailId).child("trips").push().updateChildren(trip);
 
     }
 
@@ -205,12 +239,17 @@ public class DataProcessor implements DataProcessorInterface {
     public int[] determineTripPrices(int distance) {
 
         int [] prices=new int[3];
+        int goPrice=0;
+
+        if(distance >1){
+            goPrice= distance * 13;
+        }else{
+            goPrice= 18;
+        }
 
 
 
-        int goPrice= distance * 13;
-
-        int vipPercentage= (int)(goPrice * 0.15);
+        int vipPercentage= (int)(goPrice * 0.50);
         int vanPercentage=(int)(goPrice * 0.10);
 
         int vipPrice = goPrice + vipPercentage;
@@ -234,6 +273,7 @@ public class DataProcessor implements DataProcessorInterface {
     }
 
     private void requestPermission() {
+
         ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
     }
 

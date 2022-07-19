@@ -195,7 +195,7 @@ public class Bottom extends Fragment {
                     @Override
                     public void onClick(View view) {
 
-              
+
                  if(!pickup.getText().toString().isEmpty()&&secondPlace.getAddress()!=null){
 
                         // getting distance of the trip in meters

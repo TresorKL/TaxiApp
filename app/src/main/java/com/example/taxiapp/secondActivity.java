@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.taxiapp.processor.DataProcessor;
@@ -35,7 +38,10 @@ public class secondActivity extends AppCompatActivity implements OnMapReadyCallb
     TextView goPrice, vipPrice, vanPrice;
 
 
-    // Button getDirection;
+    LinearLayout go,vip,van;
+
+
+
     private Polyline currentPolyline;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +78,48 @@ public class secondActivity extends AppCompatActivity implements OnMapReadyCallb
         goPrice.setText("R"+prices[0]);
         vipPrice.setText("R"+prices[1]);
         vanPrice.setText("R"+prices[2]);
+
+        go=findViewById(R.id.go);
+        vip=findViewById(R.id.vip);
+        van=findViewById(R.id.van);
+
+        Intent summaryActivity= new Intent(secondActivity.this,TripSummary.class);
+
+        go.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                summaryActivity.putExtra("distance",distanceNet);
+                summaryActivity.putExtra("price",goPrice.getText().toString());
+
+                startActivity(summaryActivity);
+
+            }
+        });
+        vip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                summaryActivity.putExtra("distance",distanceNet);
+                summaryActivity.putExtra("price",vipPrice.getText().toString());
+                startActivity(summaryActivity);
+
+            }
+        });
+
+        van.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                summaryActivity.putExtra("distance",distanceNet);
+                summaryActivity.putExtra("price",vanPrice.getText().toString());
+                startActivity(summaryActivity);
+
+            }
+        });
+
+
+
+
+
 
 
 
