@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="80sp"
+        android:layout_marginTop="130sp"
+
         >
 
         <TextView
@@ -27,6 +28,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center"
+            android:layout_marginTop="25sp"
             >
 
             <ImageButton
@@ -67,6 +69,17 @@
 
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50sp"
+            android:text="DONE"
+
+            android:background="@drawable/style_go_btn"
+            />
 
 
     </LinearLayout>
