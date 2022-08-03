@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".RatingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="80sp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="PLEASE RATE THE TRIP"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            >
+
+            <ImageButton
+                android:id="@+id/star1"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
+                android:background="@drawable/empty_star_icon"
+
+                />
+            <ImageButton
+                android:id="@+id/star2"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
+                android:background="@drawable/empty_star_icon"
+
+                />
+            <ImageButton
+                android:id="@+id/star3"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
+                android:background="@drawable/empty_star_icon"
+
+                />
+            <ImageButton
+                android:id="@+id/star4"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
+                android:background="@drawable/empty_star_icon"
+
+                />
+            <ImageButton
+                android:id="@+id/star5"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
+                android:background="@drawable/empty_star_icon"
+
+                />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

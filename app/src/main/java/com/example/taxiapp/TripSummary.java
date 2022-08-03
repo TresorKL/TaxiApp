@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,21 +33,22 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class TripSummary extends AppCompatActivity  implements  TaskLoadedCallback {
+public class TripSummary extends AppCompatActivity implements TaskLoadedCallback {
     private Polyline currentPolyline;
     private MarkerOptions place1, place2;
     private GoogleMap mMap;
     SharedPreferences placesPreference;
     SupportMapFragment supportMapFragment;
     DataProcessor dataProcessor = new DataProcessor(TripSummary.this);
-    TextView date, price, from,to, distance;
+    TextView date, price, from, to, distance;
     Button confirm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_summary);
 
-       // supportMapFragment = (SupportMapFragment)findFragmentById(R.id.map);
+        // supportMapFragment = (SupportMapFragment)findFragmentById(R.id.map);
         ((SupportMapFragment) getSupportFragmentManager().findFragmentById(
                 R.id.mapSummary)).getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -56,15 +58,15 @@ public class TripSummary extends AppCompatActivity  implements  TaskLoadedCallba
                 Log.d("mylog", "Added Markers");
                 mMap.addMarker(place1);
                 mMap.addMarker(place2);
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,17.0f));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.0f));
             }
         });
 
 
+        placesPreference = getSharedPreferences("placePreferences", Context.MODE_PRIVATE);
+        ;
 
-        placesPreference = getSharedPreferences("placePreferences", Context.MODE_PRIVATE);;
-
-       // get places
+        // get places
         Gson gson = new Gson();
         String json1 = placesPreference.getString("firstPlace", "");
         UserPlace firstPlace = gson.fromJson(json1, UserPlace.class);
@@ -79,7 +81,7 @@ public class TripSummary extends AppCompatActivity  implements  TaskLoadedCallba
         //get price
         String amountDueStr = (String) extras.get("price");
 
-        int amountDue= Integer.parseInt(amountDueStr.substring(1));
+        int amountDue = Integer.parseInt(amountDueStr.substring(1));
 
         //get current date
         Date c = Calendar.getInstance().getTime();
@@ -91,35 +93,33 @@ public class TripSummary extends AppCompatActivity  implements  TaskLoadedCallba
 
         // get views
         date = findViewById(R.id.date);
-        from= findViewById(R.id.from);
-        to= findViewById(R.id.to);
-        distance=  findViewById(R.id.distance);
-        price=  findViewById(R.id.amount);
-        confirm =findViewById(R.id.confirm);
+        from = findViewById(R.id.from);
+        to = findViewById(R.id.to);
+        distance = findViewById(R.id.distance);
+        price = findViewById(R.id.amount);
+        confirm = findViewById(R.id.confirm);
 
         date.setText(formattedDate);
-        from.setText(from.getText().toString()+firstPlace.getAddress());
-        to.setText(to.getText().toString()+secondPlace.getAddress());
-        distance.setText(distance.getText().toString()+distanceNet+" Km");
-        price.setText(price.getText().toString()+amountDue);
+        from.setText(from.getText().toString() + firstPlace.getAddress());
+        to.setText(to.getText().toString() + secondPlace.getAddress());
+        distance.setText(distance.getText().toString() + distanceNet + " Km");
+        price.setText(price.getText().toString() + amountDue);
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dataProcessor.StoreTrip( firstPlace,  secondPlace, distanceNet ,  formattedDate,  amountDue);
+                //dataProcessor.StoreTrip(firstPlace, secondPlace, distanceNet, formattedDate, amountDue);
 
-                Toast.makeText(TripSummary.this,"Trip saved",Toast.LENGTH_LONG).show();
+                Intent ratingActivity = new Intent(TripSummary.this, RatingActivity.class);
+                startActivity(ratingActivity);
+                //Toast.makeText(TripSummary.this, "Trip saved", Toast.LENGTH_LONG).show();
             }
         });
 
 
-
-
-
-
         place1 = new MarkerOptions().position(new LatLng(firstPlace.getLatitude(), firstPlace.getLongitude())).title("Location 1");
         place2 = new MarkerOptions().position(new LatLng(secondPlace.getLatitude(), secondPlace.getLongitude())).title("Location 2");
-        String url =getUrl(place1.getPosition(), place2.getPosition(), "driving");
+        String url = getUrl(place1.getPosition(), place2.getPosition(), "driving");
         new FetchURL(TripSummary.this).execute(url, "driving");
     }
 
@@ -149,16 +149,8 @@ public class TripSummary extends AppCompatActivity  implements  TaskLoadedCallba
     public void onTaskDone(Object... values) {
         if (currentPolyline != null)
             currentPolyline.remove();
-           currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+        currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
 
-//    @Override
-//    public void onMapReady(@NonNull GoogleMap googleMap) {
-//        LatLng latLng = new LatLng(place1.getPosition().latitude, place1.getPosition().longitude);
-//        mMap = googleMap;
-//        Log.d("mylog", "Added Markers");
-//        mMap.addMarker(place1);
-//        mMap.addMarker(place2);
-//        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16.0f));
-//    }
+ 
 }
